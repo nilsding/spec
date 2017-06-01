@@ -59,8 +59,9 @@ def compile_extension(name)
         $stderr.puts output if debug
       end
 
-      output = `make V=1`
-      raise "make failed:\n#{output}" unless $?.success?
+      make = RUBY_PLATFORM.include?('mingw') ? "nmake" : "make"
+      output = `#{make} V=1`
+      raise "#{make} failed:\n#{output}" unless $?.success?
       $stderr.puts output if debug
 
       cp File.basename(lib), lib
